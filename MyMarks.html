@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Marks Viewer</title>
+</head>
+<body>
+
+<h2>Student Login</h2>
+<input type="email" id="email" placeholder="Enter your email">
+<button onclick="login()">Login via OTP</button>
+
+<h2>Your Marks</h2>
+<button onclick="loadMarks()">Load Marks</button>
+<pre id="output"></pre>
+
+<!-- Step 1: Include Supabase client from CDN -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+<!-- Step 2: Initialize Supabase -->
+<script>
+  const SUPABASE_URL = 'https://mbhodnpbiopchkndlcqj.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_7YJUQytvNTZUer5UcGKhFA_6UxGLleg';
+
+  const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  async function login() {
+    const email = document.getElementById('email').value;
+
+    const { error } = await client.auth.signInWithOtp({
+      email: email
+    });
+
+    if (error) {
+      console.error(error);
+    } else {
+      alert('Check your email for the login link.');
+    }
+  }
+
+  async function loadMarks() {
+    const { data, error } = await client
+      .from('marks')
+      .select('*');
+
+    if (error) {
+      console.error(error);
+    } else {
+      document.getElementById('output').textContent =
+        JSON.stringify(data, null, 2);
+    }
+  }
+</script>
+
+</body>
+</html>
