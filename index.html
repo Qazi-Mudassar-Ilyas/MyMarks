@@ -7,7 +7,7 @@
 
 <h2>Student Login</h2>
 <input type="email" id="email" placeholder="Enter your email">
-<button onclick="login()">Login via OTP</button>
+<button onclick="loginWithMicrosoft()">Login with Microsoft</button>
 
 <h2>Your Marks</h2>
 <button onclick="loadMarks()">Load Marks</button>
@@ -23,14 +23,9 @@
 
   const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
- async function login() {
-  const email = document.getElementById('email').value;
-
-  const { error } = await client.auth.signInWithOtp({
-    email: email,
-    options: {
-      emailRedirectTo: 'https://qazi-mudassar-ilyas.github.io/MyMarks/'
-    }
+ async function loginWithMicrosoft() {
+  const { error } = await client.auth.signInWithOAuth({
+    provider: 'azure'
   });
 
   if (error) {
