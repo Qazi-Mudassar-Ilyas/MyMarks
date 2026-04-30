@@ -23,19 +23,20 @@
 
   const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  async function login() {
-    const email = document.getElementById('email').value;
+ async function login() {
+  const email = document.getElementById('email').value;
 
-    const { error } = await client.auth.signInWithOtp({
-      email: email
-    });
-
-    if (error) {
-      console.error(error);
-    } else {
-      alert('Check your email for the login link.');
+  const { error } = await client.auth.signInWithOtp({
+    email: email,
+    options: {
+      emailRedirectTo: 'https://qazi-mudassar-ilyas.github.io/MyMarks/'
     }
+  });
+
+  if (error) {
+    console.error(error);
   }
+}
 
   async function loadMarks() {
     const { data, error } = await client
